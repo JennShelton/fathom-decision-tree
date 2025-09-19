@@ -9,7 +9,7 @@ A branded, interactive decision tool built for consultants using the Fathom Insi
 - Responsive layout for desktop and mobile
 
 ## Live Demo
-[View on GitHub Pages](https://yourusername.github.io/your-repo-name)
+[View on GitHub Pages](https://jennshelton.github.io/fathom-decision-tree/)
 
 ## How to Use
 1. Click "Start" to begin the decision tree
@@ -17,4 +17,5 @@ A branded, interactive decision tool built for consultants using the Fathom Insi
 3. Customize questions and logic in `script.js`
 
 ## License
+
 MIT
