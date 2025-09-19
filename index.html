@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategy Team Decision Tool - Fathom Insight Management</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Lato:ital,wght@0,400;1,400&display=swap');
+        
+        body {
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #404a59;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .decision-container {
+            max-width: 1000px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            background: #404a59;
+            color: #ffffff;
+            padding: 40px;
+            text-align: center;
+            border-bottom: 3px solid #f7a1a5;
+            position: relative;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .logo svg {
+            width: 80px;
+            height: 80px;
+        }
+
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            margin: 15px 0 10px 0;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #ffffff;
+        }
+
+        .header p {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin: 0;
+            font-style: italic;
+            color: #ffffff;
+        }
+
+        .content {
+            padding: 40px;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .intro-screen {
+            text-align: center;
+        }
+
+        .intro-screen h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            color: #404a59;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .intro-screen p {
+            font-size: 1.2rem;
+            color: #404a59;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .weighting-options {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 4px solid #f7a1a5;
+        }
+
+        .weighting-options h3 {
+            font-family: 'Lato', sans-serif;
+            font-style: italic;
+            margin: 0 0 20px 0;
+            color: #404a59;
+        }
+
+        .weight-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .weight-btn {
+            background: #ffffff;
+            border: 2px solid #f7a1a5;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .weight-btn:hover, .weight-btn.selected {
+            background: #f7a1a5;
+            color: #ffffff;
+        }
+
+        .weight-btn h4 {
+            font-family: 'Lato', sans-serif;
+            font-style: italic;
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+        }
+
+        .weight-btn p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .question-screen, .result-screen {
+            text-align: center;
+            display: none;
+        }
+
+        .question-screen.active, .result-screen.active, .intro-screen.active {
+            display: block;
+        }
+
+        .question {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: #404a59;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .question-subtitle {
+            font-family: 'Lato', sans-serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .answers {
+            display: grid;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .answer-btn {
+            background: #ffffff;
+            border: 2px solid #f7a1a5;
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            position: relative;
+            color: #404a59;
+        }
+
+        .answer-btn:hover {
+            background: #f7a1a5;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(247, 161, 165, 0.3);
+        }
+
+        .answer-btn .score {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: #f7a1a5;
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .answer-btn:hover .score {
+            background: #ffffff;
+            color: #f7a1a5;
+        }
+
+        .answer-btn strong {
+            font-family: 'Lato', sans-serif;
+            font-weight: 400;
+            font-style: italic;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .result-internal {
+            background: #404a59;
+            color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 3px solid #f7a1a5;
+        }
+
+        .result-external {
+            background: #404a59;
+            color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 3px solid #f7a1a5;
+        }
+
+        .result-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #ffffff;
+        }
+
+        .result-subtitle {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 25px;
+            font-style: italic;
+            color: #ffffff;
+        }
+
+        .result-reasons {
+            text-align: left;
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #f7a1a5;
+        }
+
+        .result-reasons h4 {
+            font-family: 'Lato', sans-serif;
+            margin: 0 0 15px 0;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #ffffff;
+        }
+
+        .result-reasons ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .result-reasons li {
+            margin: 8px 0;
+            font-size: 1rem;
+            color: #ffffff;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 10px;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #f7a1a5;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #ffffff;
+            font-size: 1rem;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .nav-btn {
+            background: #f7a1a5;
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .nav-btn:hover {
+            background: #e68a8f;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.primary {
+            background: #f7a1a5;
+            font-size: 1.1rem;
+        }
+
+        .nav-btn.primary:hover {
+            background: #e68a8f;
+        }
+
+        .nav-btn:disabled {
+            background: rgba(255,255,255,0.3);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .score-display {
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            border-left: 4px solid #f7a1a5;
+        }
+
+        .score-display h4 {
+            font-family: 'Lato', sans-serif;
+            margin: 0 0 15px 0;
+            color: #ffffff;
+            font-style: italic;
+        }
+
+        .score-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .score-item {
+            background: rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #ffffff;
+        }
+
+        .score-item strong {
+            color: #ffffff;
+            font-size: 0.85rem;
+        }
+
+        .total-score {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .question {
+                font-size: 1.5rem;
+            }
+            
+            .answer-btn {
+                font-size: 1rem;
+                padding: 15px 20px;
+            }
+            
+            .score-items, .weight-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .result-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="decision-container">
+        <div class="header">
+            <div class="logo">
+                <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="#f7a1a5" stroke="none">
+                        <!-- Main compass star -->
+                        <path d="M150 20 L160 140 L150 150 L140 140 Z"/>
+                        <path d="M280 150 L160 140 L150 150 L160 160 Z"/>
+                        <path d="M150 280 L140 160 L150 150 L160 160 Z"/>
+                        <path d="M20 150 L140 160 L150 150 L140 140 Z"/>
+                        
+                        <!-- Diagonal points -->
+                        <path d="M220 80 L160 140 L150 130 L155 125 Z"/>
+                        <path d="M220 220 L160 160 L150 170 L155 175 Z"/>
+                        <path d="M80 220 L140 160 L150 170 L145 175 Z"/>
+                        <path d="M80 80 L140 140 L150 130 L145 125 Z"/>
+                        
+                        <!-- Inner rings -->
+                        <circle cx="150" cy="150" r="30" fill="none" stroke="#f7a1a5" stroke-width="4"/>
+                        <circle cx="150" cy="150" r="50" fill="none" stroke="#f7a1a5" stroke-width="3"/>
+                        <circle cx="150" cy="150" r="70" fill="none" stroke="#f7a1a5" stroke-width="2"/>
+                        
+                        <!-- Center circle -->
+                        <circle cx="150" cy="150" r="15" fill="#f7a1a5"/>
+                    </g>
+                </svg>
+            </div>
+            <h1>Strategy Decision Tool</h1>
+            <p>Navigate your consultant vs internal team choice</p>
+        </div>
+
+        <div class="content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Select Your Approach</div>
+
+            <!-- Intro Screen -->
+            <div class="intro-screen active" id="introScreen">
+                <h2>Choose Your Weighting Approach</h2>
+                <p>Different situations call for different priorities. Select how you'd like to weight the factors:</p>
+                
+                <div class="weighting-options">
+                    <h3>Select Your Priority Focus:</h3>
+                    <div class="weight-buttons">
+                        <div class="weight-btn" onclick="setWeighting('standard')">
+                            <h4>Standard Weighting</h4>
+                            <p>All factors weighted equally - balanced approach</p>
+                        </div>
+                        <div class="weight-btn" onclick="setWeighting('stakeholder')">
+                            <h4>Stakeholder-Focused</h4>
+                            <p>Emphasizes politics and external credibility</p>
+                        </div>
+                        <div class="weight-btn" onclick="setWeighting('execution')">
+                            <h4>Execution-Focused</h4>
+                            <p>Prioritizes ownership and internal capacity</p>
+                        </div>
+                        <div class="weight-btn" onclick="setWeighting('speed')">
+                            <h4>Speed-Focused</h4>
+                            <p>Emphasizes timeline and resource constraints</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Screens -->
+            <div class="question-screen" id="question1">
+                <div class="question">Institutional Knowledge Dependency</div>
+                <div class="question-subtitle">How much does success depend on deep understanding of internal operations, relationships, and business model?</div>
+                <div class="answers">
+                    <div class="answer-btn" onclick="answer(1, 5)">
+                        <div class="score">5</div>
+                        <strong>Critical dependency</strong>
+                        Success requires intimate knowledge of internal processes, key relationships, and business model nuances
+                    </div>
+                    <div class="answer-btn" onclick="answer(1, 3)">
+                        <div class="score">3</div>
+                        <strong>Moderate dependency</strong>
+                        Some internal knowledge helpful, but can be briefed or learned quickly
+                    </div>
+                    <div class="answer-btn" onclick="answer(1, 1)">
+                        <div class="score">1</div>
+                        <strong>Low dependency</strong>
+                        Mostly external-facing work, minimal need for internal operational knowledge
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-screen" id="question2">
+                <div class="question">Information Sensitivity</div>
+                <div class="question-subtitle">How confidential or competitively sensitive is the information involved?</div>
+                <div class="answers">
+                    <div class="answer-btn" onclick="answer(2, 5)">
+                        <div class="score">5</div>
+                        <strong>Highly confidential</strong>
+                        Trade secrets, competitive intelligence, M&A plans, or sensitive internal dynamics
+                    </div>
+                    <div class="answer-btn" onclick="answer(2, 3)">
+                        <div class="score">3</div>
+                        <strong>Moderately sensitive</strong>
+                        Some confidential data, manageable with proper NDAs and controls
+                    </div>
+                    <div class="answer-btn" onclick="answer(2, 1)">
+                        <div class="score">1</div>
+                        <strong>Low sensitivity</strong>
+                        Mostly public or industry-standard information, minimal confidentiality concerns
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-screen" id="question3">
+                <div class="question">Stakeholder Politics</div>
+                <div class="question-subtitle">How politically sensitive is the internal landscape around this initiative?</div>
+                <div class="answers">
+                    <div class="answer-btn" onclick="answer(3, 5)">
+                        <div class="score">5</div>
+                        <strong>Highly political</strong>
+                        Significant resistance expected, cross-functional conflicts, turf wars likely
+                    </div>
+                    <div class="answer-btn" onclick="answer(3, 3)">
+                        <div class="score">3</div>
+                        <strong>Moderately political</strong>
+                        Some stakeholder concerns and competing priorities, but manageable
+                    </div>
+                    <div class="answer-btn" onclick="answer(3, 1)">
+                        <div class="score">1</div>
+                        <strong>Low politics</strong>
+                        Broad organizational alignment, minimal internal resistance expected
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-screen" id="question4">
+                <div class="question">External Credibility</div>
+                <div class="question-subtitle">How important is third-party validation to key stakeholders (boards, investors, regulators, major customers, industry/financial analysts)?</div>
+                <div class="answers">
+                    <div class="answer-btn" onclick="answer(4, 5)">
+                        <div class="score">5</div>
+                        <strong>Critical for credibility</strong>
+                        Board presentation, investor scrutiny, regulatory review, or major customer confidence at stake
+                    </div>
+                    <div class="answer-btn" onclick="answer(4, 3)">
+                        <div class="score">3</div>
+                        <strong>Helpful for validation</strong>
+                        External credibility would strengthen the case but not make-or-break
+                    </div>
+                    <div class="answer-btn" onclick="answer(4, 1)">
+                        <div class="score">1</div>
+                        <strong>Internal credibility sufficient</strong>
+                        Stakeholders trust internal team capabilities and judgment
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-screen" id="question5">
+                <div class="question">Internal Capacity</div>
+                <div class="question-subtitle">How stretched is your internal team's current bandwidth?</div>
+                <div class="answers">
+                    <div class="answer-btn" onclick="answer(5, 5)">
+                        <div class="score">5</div>
+                        <strong>Severely stretched</strong>
+                        Team at full capacity with existing priorities, no bandwidth for major new initiative
+                    </div>
+                    <div class="answer-btn" onclick="answer(5, 3)">
+                        <div class="score">3</div>
+                        <strong>Moderately stretched</strong>
+                        Some capacity available, but would require reprioritizing other work
+                    </div>
+                    <div class="answer-btn" onclick="answer(5, 1)">
+                        <div class="score">1</div>
+                        <strong>Adequate capacity</strong>
+                        Team has bandwidth to take on this initiative without major disruption
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-screen" id="question6">
+                <div class="question">Timeline Urgency</div>
+                <div class="question-subtitle">How tight is your deadline for insights and recommendations?</div>
+                <div class="answers">
+                    <div class="answer-btn" onclick="answer(6, 5)">
+                        <div class="score">5</div>
+                        <strong>Urgent (4-8 weeks)</strong>
+                        Board deadline, competitive pressure, crisis response, or regulatory requirement
+                    </div>
+                    <div class="answer-btn" onclick="answer(6, 3)">
+                        <div class="score">3</div>
+                        <strong>Standard (2-4 months)</strong>
+                        Annual planning cycle, normal business rhythm, reasonable timeline
+                    </div>
+                    <div class="answer-btn" onclick="answer(6, 1)">
+                        <div class="score">1</div>
+                        <strong>Flexible (6+ months)</strong>
+                        Long-term planning, capability building, can accommodate thorough internal process
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-screen" id="question7">
+                <div class="question">Fresh Perspective</div>
+                <div class="question-subtitle">How much do you need cross-industry insights and external objectivity?</div>
+                <div class="answers">
+                    <div class="answer-btn" onclick="answer(7, 5)">
+                        <div class="score">5</div>
+                        <strong>Critical need</strong>
+                        Internal team too close to the problem, need outside perspective to challenge assumptions
+                    </div>
+                    <div class="answer-btn" onclick="answer(7, 3)">
+                        <div class="score">3</div>
+                        <strong>Would be valuable</strong>
+                        Fresh perspective helpful, but internal team can provide objective analysis
+                    </div>
+                    <div class="answer-btn" onclick="answer(7, 1)">
+                        <div class="score">1</div>
+                        <strong>Internal perspective preferred</strong>
+                        Need people who understand our specific context and constraints
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-screen" id="question8">
+                <div class="question">Skills Gap</div>
+                <div class="question-subtitle">Does this require specialized expertise your internal team lacks?</div>
+                <div class="answers">
+                    <div class="answer-btn" onclick="answer(8, 5)">
+                        <div class="score">5</div>
+                        <strong>Significant skills gap</strong>
+                        Requires specialized expertise (e.g., M&A, digital transformation, regulatory) team doesn't have
+                    </div>
+                    <div class="answer-btn" onclick="answer(8, 3)">
+                        <div class="score">3</div>
+                        <strong>Some skills gap</strong>
+                        Team could learn or develop capabilities, but external expertise would accelerate
+                    </div>
+                    <div class="answer-btn" onclick="answer(8, 1)">
+                        <div class="score">1</div>
+                        <strong>Team has capabilities</strong>
+                        Internal team has the skills and experience needed for this type of work
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-screen" id="question9">
+                <div class="question">Execution Ownership</div>
+                <div class="question-subtitle">How critical is long-term internal ownership of implementation?</div>
+                <div class="answers">
+                    <div class="answer-btn" onclick="answer(9, 5)">
+                        <div class="score">5</div>
+                        <strong>Critical for success</strong>
+                        Multi-year implementation, cultural change, requires ongoing internal championship
+                    </div>
+                    <div class="answer-btn" onclick="answer(9, 3)">
+                        <div class="score">3</div>
+                        <strong>Important but manageable</strong>
+                        Internal ownership valuable, but can transition from external team
+                    </div>
+                    <div class="answer-btn" onclick="answer(9, 1)">
+                        <div class="score">1</div>
+                        <strong>Low ownership needs</strong>
+                        Clear recommendations can be implemented by any capable team
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-screen" id="question10">
+                <div class="question">Budget Reality</div>
+                <div class="question-subtitle">What's your budget flexibility for external expertise?</div>
+                <div class="answers">
+                    <div class="answer-btn" onclick="answer(10, 5)">
+                        <div class="score">5</div>
+                        <strong>High budget flexibility</strong>
+                        Ample budget allocated, external spend approved and expected
+                    </div>
+                    <div class="answer-btn" onclick="answer(10, 3)">
+                        <div class="score">3</div>
+                        <strong>Moderate budget available</strong>
+                        Some external budget possible, but needs to show clear ROI
+                    </div>
+                    <div class="answer-btn" onclick="answer(10, 1)">
+                        <div class="score">1</div>
+                        <strong>Budget constrained</strong>
+                        Limited external spend available, need to maximize internal resources
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div class="result-screen" id="resultScreen">
+                <div id="resultContent"></div>
+                
+                <div class="score-display">
+                    <h4>📊 Your Scoring Breakdown:</h4>
+                    <div class="score-items" id="scoreBreakdown"></div>
+                    <div class="total-score">
+                        <strong>Total Score: <span id="totalScore"></span>/50</strong>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="nav-btn" onclick="restart()">🔄 Start Over</button>
+                    <button class="nav-btn primary" onclick="exportResults()">📧 Email Results</button>
+                </div>
+            </div>
+
+            <!-- Back button for questions -->
+            <div class="navigation" id="questionNav" style="display: none;">
+                <button class="nav-btn" id="backBtn" onclick="goBack()">← Back</button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 0; // 0 = intro, 1-10 = questions
+        let answers = {};
+        let scores = {};
+        let weighting = 'standard';
+        
+        const questions = [
+            'institutional', 'sensitivity', 'politics', 'credibility', 'capacity', 
+            'timeline', 'perspective', 'skills', 'ownership', 'budget'
+        ];
+        
+        const questionLabels = {
+            institutional: 'Institutional Knowledge',
+            sensitivity: 'Information Sensitivity',
+            politics: 'Stakeholder Politics',
+            credibility: 'External Credibility',
+            capacity: 'Internal Capacity',
+            timeline: 'Timeline Urgency',
+            perspective: 'Fresh Perspective',
+            skills: 'Skills Gap',
+            ownership: 'Execution Ownership',
+            budget: 'Budget Reality'
+        };
+
+        const weightings = {
+            standard: { institutional: 1, sensitivity: 1, politics: 1, credibility: 1, capacity: 1, timeline: 1, perspective: 1, skills: 1, ownership: 1, budget: 1 },
+            stakeholder: { institutional: 1, sensitivity: 1, politics: 2, credibility: 2, capacity: 1, timeline: 1, perspective: 1, skills: 1, ownership: 1, budget: 1 },
+            execution: { institutional: 1, sensitivity: 1, politics: 1, credibility: 1, capacity: 2, timeline: 1, perspective: 1, skills: 1, ownership: 2, budget: 1 },
+            speed: { institutional: 1, sensitivity: 1, politics: 1, credibility: 1, capacity: 2, timeline: 2, perspective: 1, skills: 1, ownership: 1, budget: 1 }
+        };
+
+        function updateProgress() {
+            const progress = currentQuestion / 10 * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            if (currentQuestion === 0) {
+                document.getElementById('progressText').textContent = 'Select Your Approach';
+            } else if (currentQuestion === 1) {
+                document.getElementById('question1').classList.remove('active');
+                document.getElementById('introScreen').classList.add('active');
+                document.getElementById('questionNav').style.display = 'none';
+                currentQuestion = 0;
+                updateProgress();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('progressFill').style.width = '100%';
+            document.getElementById('progressText').textContent = 'Analysis Complete!';
+            document.getElementById('questionNav').style.display = 'none';
+            
+            // Hide all questions
+            for (let i = 1; i <= 10; i++) {
+                document.getElementById(`question${i}`).classList.remove('active');
+            }
+            
+            // Calculate weighted scores
+            let internalScore = 0;
+            let externalScore = 0;
+            let maxPossible = 0;
+            
+            const currentWeights = weightings[weighting];
+            
+            // Internal-favoring questions: institutional, sensitivity, politics, ownership
+            const internalQuestions = ['institutional', 'sensitivity', 'politics', 'ownership'];
+            // External-favoring questions: credibility, capacity, timeline, perspective, skills, budget
+            const externalQuestions = ['credibility', 'capacity', 'timeline', 'perspective', 'skills', 'budget'];
+            
+            internalQuestions.forEach(q => {
+                const weight = currentWeights[q];
+                internalScore += scores[q] * weight;
+                maxPossible += 5 * weight;
+            });
+            
+            externalQuestions.forEach(q => {
+                const weight = currentWeights[q];
+                externalScore += scores[q] * weight;
+            });
+            
+            const totalWeightedScore = internalScore + externalScore;
+            const internalPercentage = (internalScore / totalWeightedScore) * 100;
+            
+            let recommendation, reasons, resultClass;
+            
+            if (internalPercentage >= 65) {
+                recommendation = "🏢 Strongly Recommend Internal Team";
+                resultClass = "result-internal";
+                reasons = [
+                    "High institutional knowledge needs favor internal expertise",
+                    "Political sensitivity requires cultural understanding",
+                    "Information confidentiality creates external risks",
+                    "Long-term ownership critical for sustainable success"
+                ];
+            } else if (internalPercentage >= 55) {
+                recommendation = "🏢 Lean Internal (with selective external support)";
+                resultClass = "result-internal";
+                reasons = [
+                    "Internal team should lead with targeted external expertise",
+                    "Consider external validation for key stakeholder moments",
+                    "Hybrid approach balances internal knowledge with external capabilities"
+                ];
+            } else if (internalPercentage >= 45) {
+                recommendation = "⚖️ Hybrid Approach Recommended";
+                resultClass = "result-internal";
+                reasons = [
+                    "Balanced needs suggest collaborative internal-external model",
+                    "Internal team provides context, external provides capabilities",
+                    "Clear role definitions essential for success"
+                ];
+            } else if (internalPercentage >= 35) {
+                recommendation = "🌟 Lean External (with strong internal partnership)";
+                resultClass = "result-external";
+                reasons = [
+                    "External consultants should lead with internal support",
+                    "Leverage external speed and specialized expertise",
+                    "Ensure knowledge transfer and internal capability building"
+                ];
+            } else {
+                recommendation = "🌟 Strongly Recommend External Consultants";
+                resultClass = "result-external";
+                reasons = [
+                    "Timeline urgency requires dedicated external resources",
+                    "Skills gaps need specialized external expertise",
+                    "Stakeholder credibility demands third-party validation",
+                    "Fresh perspective critical for breakthrough insights"
+                ];
+            }
+            
+            document.getElementById('resultContent').innerHTML = `
+                <div class="${resultClass}">
+                    <div class="result-title">${recommendation}</div>
+                    <div class="result-subtitle">Based on your ${weighting} weighting approach</div>
+                    <div class="result-reasons">
+                        <h4>🎯 Key Drivers:</h4>
+                        <ul>
+                            ${reasons.map(reason => `<li>${reason}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            // Show score breakdown
+            document.getElementById('scoreBreakdown').innerHTML = Object.entries(scores)
+                .map(([key, value]) => {
+                    const weight = currentWeights[key];
+                    const weightedScore = value * weight;
+                    const maxWeighted = 5 * weight;
+                    return `
+                        <div class="score-item">
+                            <strong>${questionLabels[key]}:</strong> ${value}/5 ${weight > 1 ? `(×${weight} = ${weightedScore}/${maxWeighted})` : ''}
+                        </div>
+                    `;
+                }).join('');
+            
+            document.getElementById('totalScore').textContent = `${Math.round(internalPercentage)}% Internal vs ${Math.round(100-internalPercentage)}% External`;
+            document.getElementById('resultScreen').classList.add('active');
+        }
+
+        function restart() {
+            currentQuestion = 0;
+            answers = {};
+            scores = {};
+            weighting = 'standard';
+            
+            document.getElementById('resultScreen').classList.remove('active');
+            document.getElementById('introScreen').classList.add('active');
+            document.getElementById('questionNav').style.display = 'none';
+            
+            // Reset weighting buttons
+            document.querySelectorAll('.weight-btn').forEach(btn => btn.classList.remove('selected'));
+            
+            updateProgress();
+        }
+
+        function exportResults() {
+            const resultText = document.getElementById('resultContent').textContent.trim();
+            const scores = Object.entries(answers).map(([q, score]) => `Question ${q}: ${score}/5`).join('\n');
+            
+            const emailBody = `Strategy Decision Tool Results\n\n${resultText}\n\nDetailed Scores:\n${scores}\n\nGenerated by Fathom Insight Management Strategy Decision Tool`;
+            
+            const mailtoLink = `mailto:?subject=Strategy Decision Tool Results&body=${encodeURIComponent(emailBody)}`;
+            window.open(mailtoLink);
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html> {
+                document.getElementById('progressText').textContent = `Question ${currentQuestion} of 10`;
+            }
+        }
+
+        function setWeighting(type) {
+            weighting = type;
+            // Visual feedback
+            document.querySelectorAll('.weight-btn').forEach(btn => btn.classList.remove('selected'));
+            event.target.closest('.weight-btn').classList.add('selected');
+            
+            setTimeout(() => {
+                document.getElementById('introScreen').classList.remove('active');
+                currentQuestion = 1;
+                document.getElementById('question1').classList.add('active');
+                document.getElementById('questionNav').style.display = 'flex';
+                updateProgress();
+            }, 500);
+        }
+
+        function answer(questionNum, score) {
+            const questionType = questions[questionNum - 1];
+            scores[questionType] = score;
+            answers[questionNum] = score;
+            
+            if (questionNum < 10) {
+                document.getElementById(`question${questionNum}`).classList.remove('active');
+                currentQuestion = questionNum + 1;
+                document.getElementById(`question${currentQuestion}`).classList.add('active');
+                updateProgress();
+            } else {
+                showResult();
+            }
+        }
+
+        function goBack() {
+            if (currentQuestion > 1) {
+                document.getElementById(`question${currentQuestion}`).classList.remove('active');
+                currentQuestion--;
+                document.getElementById(`question${currentQuestion}`).classList.add('active');
+                updateProgress();
+            } else
