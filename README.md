@@ -1,6 +1,6 @@
 # Fathom Insight Decision Tree
 
-A branded, interactive decision tool built for consultants using the Fathom Insight Management design language. It was built with HTML/CSS/JavaScript, and developed with assistance from Claude Sonnet 4 (Anthropic)
+A branded, interactive decision tool built for consultants using the Fathom Insight Management design language. It was built with HTML/CSS/JavaScript, and developed with assistance from Claude Sonnet 4 (Anthropic).
 
 ## Features
 - Bold Montserrat headlines, italic Lato subheaders
@@ -19,4 +19,5 @@ A branded, interactive decision tool built for consultants using the Fathom Insi
 ## License
 
 MIT
+
 
