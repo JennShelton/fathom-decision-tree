@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategy Team Decision Tool - Fathom Insight Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #404a59;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #404a59;
+            color: #ffffff;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 3px solid #f7a1a5;
+        }
+
+        .logo {
+            margin-bottom: 15px;
+        }
+
+        .logo img {
+            width: 60px;
+            height: 60px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #ffffff;
+            margin: 10px 0 5px 0;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-style: italic;
+            color: #ffffff;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .progress-section {
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            background: rgba(64, 74, 89, 0.2);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #0084ff;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #404a59;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .screen {
+            display: none;
+            min-height: 400px;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .screen-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #404a59;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .screen-subtitle {
+            font-style: italic;
+            font-size: 1rem;
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .intro-text {
+            font-size: 1.1rem;
+            color: #404a59;
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .options-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 4px solid #f7a1a5;
+            margin: 20px 0;
+        }
+
+        .options-title {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #404a59;
+            font-size: 1.1rem;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: #ffffff;
+            border: 2px solid #0084ff;
+            padding: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover,
+        .option-btn.selected {
+            background: #0084ff;
+            color: #ffffff;
+        }
+
+        .option-btn h4 {
+            font-style: italic;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .option-btn p {
+            margin: 0;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 20px auto;
+            display: block;
+        }
+
+        .icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .answers-container {
+            margin: 25px 0;
+        }
+
+        .answer-option {
+            background: #ffffff;
+            border: 2px solid #0084ff;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .answer-option:hover {
+            background: #0084ff;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .answer-score {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            background: #0084ff;
+            color: #ffffff;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .answer-option:hover .answer-score {
+            background: #ffffff;
+            color: #0084ff;
+        }
+
+        .answer-title {
+            font-style: italic;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .answer-desc {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .result-box {
+            background: #404a59;
+            color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 3px solid #f7a1a5;
+        }
+
+        .result-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .result-subtitle {
+            font-style: italic;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .result-reasons {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #f7a1a5;
+        }
+
+        .result-reasons h4 {
+            font-style: italic;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .result-reasons ul {
+            padding-left: 18px;
+        }
+
+        .result-reasons li {
+            margin: 6px 0;
+            line-height: 1.4;
+        }
+
+        .score-breakdown {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #f7a1a5;
+        }
+
+        .score-breakdown h4 {
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .score-item {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .total-score {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 15px;
+        }
+
+        .nav-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: #0084ff;
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #0066cc;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .nav-btn.primary {
+            background: #0084ff;
+            font-size: 1rem;
+            padding: 14px 28px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px 0;
+            }
+            
+            .container {
+                width: 95%;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .screen-title {
+                font-size: 1.4rem;
+            }
+            
+            .result-title {
+                font-size: 1.6rem;
+            }
+            
+            .option-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-section {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="assets/logo.png" alt="Fathom Insight Management Logo">
+            </div>
+            <h1>Strategy Decision Tool</h1>
+            <p>Navigate your consultant vs internal team choice</p>
+        </div>
+
+        <div class="main-content">
+            <div class="progress-section">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">Select Your Approach</div>
+            </div>
+
+            <!-- Intro Screen -->
+            <div class="screen active" id="introScreen">
+                <div class="screen-title">Choose Your Weighting Approach</div>
+                <div class="intro-text">Different situations call for different priorities. Select how you'd like to weight the factors:</div>
+                
+                <div class="options-container">
+                    <div class="options-title">Select Your Priority Focus:</div>
+                    <div class="option-grid">
+                        <div class="option-btn" onclick="setWeighting('standard')">
+                            <h4>Standard Weighting</h4>
+                            <p>All factors weighted equally - balanced approach</p>
+                        </div>
+                        <div class="option-btn" onclick="setWeighting('stakeholder')">
+                            <h4>Stakeholder-Focused</h4>
+                            <p>Emphasizes politics and external credibility</p>
+                        </div>
+                        <div class="option-btn" onclick="setWeighting('execution')">
+                            <h4>Execution-Focused</h4>
+                            <p>Prioritizes ownership and internal capacity</p>
+                        </div>
+                        <div class="option-btn" onclick="setWeighting('speed')">
+                            <h4>Speed-Focused</h4>
+                            <p>Emphasizes timeline and resource constraints</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Screens -->
+            <div class="screen" id="question1">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#f7a1a5" stroke-width="1.5">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                        <path d="M12 7v4"/>
+                        <path d="M12 15h.01"/>
+                    </svg>
+                </div>
+                <div class="screen-title">Institutional Knowledge Dependency</div>
+                <div class="screen-subtitle">How much does success depend on deep understanding of internal operations, relationships, and business model?</div>
+                <div class="answers-container">
+                    <div class="answer-option" onclick="answer(1, 5)">
+                        <div class="answer-score">5</div>
+                        <span class="answer-title">Critical dependency</span>
+                        <div class="answer-desc">Success requires intimate knowledge of internal processes, key relationships, and business model nuances</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(1, 3)">
+                        <div class="answer-score">3</div>
+                        <span class="answer-title">Moderate dependency</span>
+                        <div class="answer-desc">Some internal knowledge helpful, but can be briefed or learned quickly</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(1, 1)">
+                        <div class="answer-score">1</div>
+                        <span class="answer-title">Low dependency</span>
+                        <div class="answer-desc">Mostly external-facing work, minimal need for internal operational knowledge</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="screen" id="question2">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#f7a1a5" stroke-width="1.5">
+                        <rect x="3" y="11" width="18" height="10" rx="2" ry="2"/>
+                        <circle cx="12" cy="16" r="1"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                </div>
+                <div class="screen-title">Information Sensitivity</div>
+                <div class="screen-subtitle">How confidential or competitively sensitive is the information involved?</div>
+                <div class="answers-container">
+                    <div class="answer-option" onclick="answer(2, 5)">
+                        <div class="answer-score">5</div>
+                        <span class="answer-title">Highly confidential</span>
+                        <div class="answer-desc">Trade secrets, competitive intelligence, M&A plans, or sensitive internal dynamics</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(2, 3)">
+                        <div class="answer-score">3</div>
+                        <span class="answer-title">Moderately sensitive</span>
+                        <div class="answer-desc">Some confidential data, manageable with proper NDAs and controls</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(2, 1)">
+                        <div class="answer-score">1</div>
+                        <span class="answer-title">Low sensitivity</span>
+                        <div class="answer-desc">Mostly public or industry-standard information, minimal confidentiality concerns</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="screen" id="question3">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#f7a1a5" stroke-width="1.5">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </div>
+                <div class="screen-title">Stakeholder Politics</div>
+                <div class="screen-subtitle">How politically sensitive is the internal landscape around this initiative?</div>
+                <div class="answers-container">
+                    <div class="answer-option" onclick="answer(3, 5)">
+                        <div class="answer-score">5</div>
+                        <span class="answer-title">Highly political</span>
+                        <div class="answer-desc">Significant resistance expected, cross-functional conflicts, turf wars likely</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(3, 3)">
+                        <div class="answer-score">3</div>
+                        <span class="answer-title">Moderately political</span>
+                        <div class="answer-desc">Some stakeholder concerns and competing priorities, but manageable</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(3, 1)">
+                        <div class="answer-score">1</div>
+                        <span class="answer-title">Low politics</span>
+                        <div class="answer-desc">Broad organizational alignment, minimal internal resistance expected</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="screen" id="question4">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#f7a1a5" stroke-width="1.5">
+                        <path d="M9 12l2 2 4-4"/>
+                        <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
+                        <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
+                        <path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
+                        <path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
+                    </svg>
+                </div>
+                <div class="screen-title">External Credibility</div>
+                <div class="screen-subtitle">How important is third-party validation to key stakeholders (boards, investors, regulators, major customers, industry/financial analysts)?</div>
+                <div class="answers-container">
+                    <div class="answer-option" onclick="answer(4, 5)">
+                        <div class="answer-score">5</div>
+                        <span class="answer-title">Critical for credibility</span>
+                        <div class="answer-desc">Board presentation, investor scrutiny, regulatory review, or major customer confidence at stake</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(4, 3)">
+                        <div class="answer-score">3</div>
+                        <span class="answer-title">Helpful for validation</span>
+                        <div class="answer-desc">External credibility would strengthen the case but not make-or-break</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(4, 1)">
+                        <div class="answer-score">1</div>
+                        <span class="answer-title">Internal credibility sufficient</span>
+                        <div class="answer-desc">Stakeholders trust internal team capabilities and judgment</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="screen" id="question5">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#f7a1a5" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12,6 12,12 16,14"/>
+                    </svg>
+                </div>
+                <div class="screen-title">Internal Capacity</div>
+                <div class="screen-subtitle">How stretched is your internal team's current bandwidth?</div>
+                <div class="answers-container">
+                    <div class="answer-option" onclick="answer(5, 5)">
+                        <div class="answer-score">5</div>
+                        <span class="answer-title">Severely stretched</span>
+                        <div class="answer-desc">Team at full capacity with existing priorities, no bandwidth for major new initiative</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(5, 3)">
+                        <div class="answer-score">3</div>
+                        <span class="answer-title">Moderately stretched</span>
+                        <div class="answer-desc">Some capacity available, but would require reprioritizing other work</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(5, 1)">
+                        <div class="answer-score">1</div>
+                        <span class="answer-title">Adequate capacity</span>
+                        <div class="answer-desc">Team has bandwidth to take on this initiative without major disruption</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="screen" id="question6">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#f7a1a5" stroke-width="1.5">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                </div>
+                <div class="screen-title">Timeline Urgency</div>
+                <div class="screen-subtitle">How tight is your deadline for insights and recommendations?</div>
+                <div class="answers-container">
+                    <div class="answer-option" onclick="answer(6, 5)">
+                        <div class="answer-score">5</div>
+                        <span class="answer-title">Urgent (4-8 weeks)</span>
+                        <div class="answer-desc">Board deadline, competitive pressure, crisis response, or regulatory requirement</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(6, 3)">
+                        <div class="answer-score">3</div>
+                        <span class="answer-title">Standard (2-4 months)</span>
+                        <div class="answer-desc">Annual planning cycle, normal business rhythm, reasonable timeline</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(6, 1)">
+                        <div class="answer-score">1</div>
+                        <span class="answer-title">Flexible (6+ months)</span>
+                        <div class="answer-desc">Long-term planning, capability building, can accommodate thorough internal process</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="screen" id="question7">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#f7a1a5" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 1v6m0 6v6"/>
+                        <path d="m21 12-6-3-6 3-6-3"/>
+                    </svg>
+                </div>
+                <div class="screen-title">Fresh Perspective</div>
+                <div class="screen-subtitle">How much do you need cross-industry insights and external objectivity?</div>
+                <div class="answers-container">
+                    <div class="answer-option" onclick="answer(7, 5)">
+                        <div class="answer-score">5</div>
+                        <span class="answer-title">Critical need</span>
+                        <div class="answer-desc">Internal team too close to the problem, need outside perspective to challenge assumptions</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(7, 3)">
+                        <div class="answer-score">3</div>
+                        <span class="answer-title">Would be valuable</span>
+                        <div class="answer-desc">Fresh perspective helpful, but internal team can provide objective analysis</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(7, 1)">
+                        <div class="answer-score">1</div>
+                        <span class="answer-title">Internal perspective preferred</span>
+                        <div class="answer-desc">Need people who understand our specific context and constraints</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="screen" id="question8">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#f7a1a5" stroke-width="1.5">
+                        <path d="M12 2v20"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                </div>
+                <div class="screen-title">Skills Gap</div>
+                <div class="screen-subtitle">Does this require specialized expertise your internal team lacks?</div>
+                <div class="answers-container">
+                    <div class="answer-option" onclick="answer(8, 5)">
+                        <div class="answer-score">5</div>
+                        <span class="answer-title">Significant skills gap</span>
+                        <div class="answer-desc">Requires specialized expertise (e.g., M&A, digital transformation, regulatory) team doesn't have</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(8, 3)">
+                        <div class="answer-score">3</div>
+                        <span class="answer-title">Some skills gap</span>
+                        <div class="answer-desc">Team could learn or develop capabilities, but external expertise would accelerate</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(8, 1)">
+                        <div class="answer-score">1</div>
+                        <span class="answer-title">Team has capabilities</span>
+                        <div class="answer-desc">Internal team has the skills and experience needed for this type of work</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="screen" id="question9">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#f7a1a5" stroke-width="1.5">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="8.5" cy="7" r="4"/>
+                        <line x1="20" y1="8" x2="20" y2="14"/>
+                        <line x1="23" y1="11" x2="17" y2="11"/>
+                    </svg>
+                </div>
+                <div class="screen-title">Execution Ownership</div>
+                <div class="screen-subtitle">How critical is long-term internal ownership of implementation?</div>
+                <div class="answers-container">
+                    <div class="answer-option" onclick="answer(9, 5)">
+                        <div class="answer-score">5</div>
+                        <span class="answer-title">Critical for success</span>
+                        <div class="answer-desc">Multi-year implementation, cultural change, requires ongoing internal championship</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(9, 3)">
+                        <div class="answer-score">3</div>
+                        <span class="answer-title">Important but manageable</span>
+                        <div class="answer-desc">Internal ownership valuable, but can transition from external team</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(9, 1)">
+                        <div class="answer-score">1</div>
+                        <span class="answer-title">Low ownership needs</span>
+                        <div class="answer-desc">Clear recommendations can be implemented by any capable team</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="screen" id="question10">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#f7a1a5" stroke-width="1.5">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                </div>
+                <div class="screen-title">Budget Reality</div>
+                <div class="screen-subtitle">What's your budget flexibility for external expertise?</div>
+                <div class="answers-container">
+                    <div class="answer-option" onclick="answer(10, 5)">
+                        <div class="answer-score">5</div>
+                        <span class="answer-title">High budget flexibility</span>
+                        <div class="answer-desc">Ample budget allocated, external spend approved and expected</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(10, 3)">
+                        <div class="answer-score">3</div>
+                        <span class="answer-title">Moderate budget available</span>
+                        <div class="answer-desc">Some external budget possible, but needs to show clear ROI</div>
+                    </div>
+                    <div class="answer-option" onclick="answer(10, 1)">
+                        <div class="answer-score">1</div>
+                        <span class="answer-title">Budget constrained</span>
+                        <div class="answer-desc">Limited external spend available, need to maximize internal resources</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div class="screen" id="resultScreen">
+                <div id="resultContent"></div>
+                
+                <div class="score-breakdown">
+                    <h4>Your Scoring Breakdown:</h4>
+                    <div class="score-grid" id="scoreBreakdown"></div>
+                    <div class="total-score">
+                        <strong>Result: <span id="totalScore"></span></strong>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <button class="nav-btn" onclick="restart()">Start Over</button>
+                    <button class="nav-btn primary" onclick="exportResults()">Email Results</button>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="nav-section" id="questionNav" style="display: none;">
+                <button class="nav-btn" id="backBtn" onclick="goBack()">← Back</button>
+                <div style="flex: 1;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 0;
+        let answers = {};
+        let scores = {};
+        let weighting = 'standard';
+        
+        const questions = [
+            'institutional', 'sensitivity', 'politics', 'credibility', 'capacity', 
+            'timeline', 'perspective', 'skills', 'ownership', 'budget'
+        ];
+        
+        const questionLabels = {
+            institutional: 'Institutional Knowledge',
+            sensitivity: 'Information Sensitivity',
+            politics: 'Stakeholder Politics',
+            credibility: 'External Credibility',
+            capacity: 'Internal Capacity',
+            timeline: 'Timeline Urgency',
+            perspective: 'Fresh Perspective',
+            skills: 'Skills Gap',
+            ownership: 'Execution Ownership',
+            budget: 'Budget Reality'
+        };
+
+        const weightings = {
+            standard: { institutional: 1, sensitivity: 1, politics: 1, credibility: 1, capacity: 1, timeline: 1, perspective: 1, skills: 1, ownership: 1, budget: 1 },
+            stakeholder: { institutional: 1, sensitivity: 1, politics: 2, credibility: 2, capacity: 1, timeline: 1, perspective: 1, skills: 1, ownership: 1, budget: 1 },
+            execution: { institutional: 1, sensitivity: 1, politics: 1, credibility: 1, capacity: 2, timeline: 1, perspective: 1, skills: 1, ownership: 2, budget: 1 },
+            speed: { institutional: 1, sensitivity: 1, politics: 1, credibility: 1, capacity: 2, timeline: 2, perspective: 1, skills: 1, ownership: 1, budget: 1 }
+        };
+
+        function updateProgress() {
+            const progress = currentQuestion / 10 * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            if (currentQuestion === 0) {
+                document.getElementById('progressText').textContent = 'Select Your Approach';
+            } else {
+                document.getElementById('progressText').textContent = `Question ${currentQuestion} of 10`;
+            }
+        }
+
+        function setWeighting(type) {
+            weighting = type;
+            document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+            event.target.closest('.option-btn').classList.add('selected');
+            
+            setTimeout(() => {
+                document.getElementById('introScreen').classList.remove('active');
+                currentQuestion = 1;
+                document.getElementById('question1').classList.add('active');
+                document.getElementById('questionNav').style.display = 'flex';
+                updateProgress();
+            }, 500);
+        }
+
+        function answer(questionNum, score) {
+            const questionType = questions[questionNum - 1];
+            scores[questionType] = score;
+            answers[questionNum] = score;
+            
+            if (questionNum < 10) {
+                document.getElementById(`question${questionNum}`).classList.remove('active');
+                currentQuestion = questionNum + 1;
+                document.getElementById(`question${currentQuestion}`).classList.add('active');
+                updateProgress();
+            } else {
+                showResult();
+            }
+        }
+
+        function goBack() {
+            if (currentQuestion > 1) {
+                document.getElementById(`question${currentQuestion}`).classList.remove('active');
+                currentQuestion--;
+                document.getElementById(`question${currentQuestion}`).classList.add('active');
+                updateProgress();
+            } else if (currentQuestion === 1) {
+                document.getElementById('question1').classList.remove('active');
+                document.getElementById('introScreen').classList.add('active');
+                document.getElementById('questionNav').style.display = 'none';
+                currentQuestion = 0;
+                updateProgress();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('progressFill').style.width = '100%';
+            document.getElementById('progressText').textContent = 'Analysis Complete!';
+            document.getElementById('questionNav').style.display = 'none';
+            
+            for (let i = 1; i <= 10; i++) {
+                document.getElementById(`question${i}`).classList.remove('active');
+            }
+            
+            let internalScore = 0;
+            let externalScore = 0;
+            const currentWeights = weightings[weighting];
+            
+            const internalQuestions = ['institutional', 'sensitivity', 'politics', 'ownership'];
+            const externalQuestions = ['credibility', 'capacity', 'timeline', 'perspective', 'skills', 'budget'];
+            
+            internalQuestions.forEach(q => {
+                const weight = currentWeights[q];
+                internalScore += scores[q] * weight;
+            });
+            
+            externalQuestions.forEach(q => {
+                const weight = currentWeights[q];
+                externalScore += scores[q] * weight;
+            });
+            
+            const totalWeightedScore = internalScore + externalScore;
+            const internalPercentage = (internalScore / totalWeightedScore) * 100;
+            
+            let recommendation, reasons, resultClass;
+            
+            if (internalPercentage >= 65) {
+                recommendation = "Strongly Recommend Internal Team";
+                resultClass = "result-internal";
+                reasons = [
+                    "High institutional knowledge needs favor internal expertise",
+                    "Political sensitivity requires cultural understanding",
+                    "Information confidentiality creates external risks",
+                    "Long-term ownership critical for sustainable success"
+                ];
+            } else if (internalPercentage >= 55) {
+                recommendation = "Lean Internal (with selective external support)";
+                resultClass = "result-internal";
+                reasons = [
+                    "Internal team should lead with targeted external expertise",
+                    "Consider external validation for key stakeholder moments",
+                    "Hybrid approach balances internal knowledge with external capabilities"
+                ];
+            } else if (internalPercentage >= 45) {
+                recommendation = "Hybrid Approach Recommended";
+                resultClass = "result-internal";
+                reasons = [
+                    "Balanced needs suggest collaborative internal-external model",
+                    "Internal team provides context, external provides capabilities",
+                    "Clear role definitions essential for success"
+                ];
+            } else if (internalPercentage >= 35) {
+                recommendation = "Lean External (with strong internal partnership)";
+                resultClass = "result-external";
+                reasons = [
+                    "External consultants should lead with internal support",
+                    "Leverage external speed and specialized expertise",
+                    "Ensure knowledge transfer and internal capability building"
+                ];
+            } else {
+                recommendation = "Strongly Recommend External Consultants";
+                resultClass = "result-external";
+                reasons = [
+                    "Timeline urgency requires dedicated external resources",
+                    "Skills gaps need specialized external expertise",
+                    "Stakeholder credibility demands third-party validation",
+                    "Fresh perspective critical for breakthrough insights"
+                ];
+            }
+            
+            document.getElementById('resultContent').innerHTML = `
+                <div class="result-box">
+                    <div class="result-title">${recommendation}</div>
+                    <div class="result-subtitle">Based on your ${weighting} weighting approach</div>
+                    <div class="result-reasons">
+                        <h4>Key Drivers:</h4>
+                        <ul>
+                            ${reasons.map(reason => `<li>${reason}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('scoreBreakdown').innerHTML = Object.entries(scores)
+                .map(([key, value]) => {
+                    const weight = currentWeights[key];
+                    const weightedScore = value * weight;
+                    const maxWeighted = 5 * weight;
+                    return `
+                        <div class="score-item">
+                            <strong>${questionLabels[key]}:</strong> ${value}/5 ${weight > 1 ? `(×${weight} = ${weightedScore}/${maxWeighted})` : ''}
+                        </div>
+                    `;
+                }).join('');
+            
+            document.getElementById('totalScore').textContent = `${Math.round(internalPercentage)}% Internal vs ${Math.round(100-internalPercentage)}% External`;
+            document.getElementById('resultScreen').classList.add('active');
+        }
+
+        function restart() {
+            currentQuestion = 0;
+            answers = {};
+            scores = {};
+            weighting = 'standard';
+            
+            document.getElementById('resultScreen').classList.remove('active');
+            document.getElementById('introScreen').classList.add('active');
+            document.getElementById('questionNav').style.display = 'none';
+            
+            document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+            updateProgress();
+        }
+
+        function exportResults() {
+            const resultText = document.getElementById('resultContent').textContent.trim();
+            const scores = Object.entries(answers).map(([q, score]) => `Question ${q}: ${score}/5`).join('\n');
+            
+            const emailBody = `Strategy Decision Tool Results\n\n${resultText}\n\nDetailed Scores:\n${scores}\n\nGenerated by Fathom Insight Management Strategy Decision Tool`;
+            
+            const mailtoLink = `mailto:?subject=Strategy Decision Tool Results&body=${encodeURIComponent(emailBody)}`;
+            window.open(mailtoLink);
+        }
+
+        updateProgress();
+    </script>
+</body>
+</html>
