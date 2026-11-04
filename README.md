@@ -1,23 +1,20 @@
-# Fathom Insight Decision Tree
+# Strategy Decision Tool — Fathom Insight Management
 
-A branded, interactive decision tool built for consultants using the Fathom Insight Management design language. It was built with HTML/CSS/JavaScript, and developed with assistance from Claude Sonnet 4 (Anthropic).
+An interactive tool that helps organizations decide whether to use their internal team, external consultants, or a hybrid of the two for a strategic initiative.
 
-## Features
-- Bold Montserrat headlines, italic Lato subheaders
-- Custom color palette: #404a59 background, #0084ff buttons, #f7a1a5 accents, #ffffff text
-- Branching logic based on user input
-- Responsive layout for desktop and mobile
+## How it works
+1. Answer 13 questions about the initiative.
+2. Choose what matters most (balanced, stakeholder, execution or speed). The matching factors count double.
+3. Get a recommendation on a simple internal-to-external scale, the specific factors driving it, practical next steps, and an option to book a call or email the results.
 
-## Live Demo
-[View on GitHub Pages](https://jennshelton.github.io/fathom-decision-tree/)
+## Notes
+- Built with plain HTML, CSS and JavaScript in a single `index.html` file.
+- Keyboard accessible.
+- Optional cookie-free visitor counting via GoatCounter (off until a GoatCounter code is added in `index.html`).
+- Answers stay in the visitor's browser and are never stored or sent anywhere.
 
-## How to Use
-1. Click "Start" to begin the decision tree
-2. Answer each question to receive a tailored recommendation
-3. Customize questions and logic in `script.js`
+## Live site
+https://jennshelton.github.io/fathom-decision-tree/
 
 ## License
-
 MIT
-
-
