@@ -43,6 +43,15 @@
             align-items: center;
         }
         
+        .logo a {
+            display: inline-block;
+            transition: opacity 0.2s ease;
+        }
+
+        .logo a:hover {
+            opacity: 0.85;
+        }
+
         .logo img {
             width: 400px;
             height: auto;
@@ -353,6 +362,26 @@
             transform: none;
         }
 
+        .score-answer {
+            font-size: 0.85rem;
+            margin: 3px 0 6px 0;
+            opacity: 0.85;
+        }
+
+        .lean-tag, .lean-double {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-right: 4px;
+        }
+
+        .lean-internal { background: #404a59; color: #ffffff; }
+        .lean-external { background: #0084ff; color: #ffffff; }
+        .lean-neutral  { background: #e4e7ec; color: #404a59; }
+        .lean-double   { background: #fde3e4; color: #404a59; }
+
         .email-note {
             margin-top: 15px;
             padding: 12px 16px;
@@ -414,7 +443,9 @@
     <div class="container">
         <div class="header">
             <div class="logo">
-                <img src="assets/logo.svg" alt="Fathom Insight Management Logo">
+                <a href="https://www.fathominsight.com/" target="_blank" rel="noopener" title="Visit Fathom Insight Management">
+                    <img src="assets/logo.svg" alt="Fathom Insight Management - visit our website">
+                </a>
             </div>
             <h1>Strategy Decision Tool</h1>
             <p>Navigate your consultant vs internal team choice</p>
@@ -468,17 +499,14 @@
                 <div class="screen-subtitle">How much does success depend on deep understanding of internal operations, relationships, and business model?</div>
                 <div class="answers-container">
                     <div class="answer-option" onclick="answer(1, 5)">
-                        <div class="answer-score">5</div>
                         <span class="answer-title">Critical dependency</span>
                         <div class="answer-desc">Success requires intimate knowledge of internal processes, key relationships, and business model nuances</div>
                     </div>
                     <div class="answer-option" onclick="answer(1, 3)">
-                        <div class="answer-score">3</div>
                         <span class="answer-title">Moderate dependency</span>
                         <div class="answer-desc">Some internal knowledge helpful, but can be briefed or learned quickly</div>
                     </div>
                     <div class="answer-option" onclick="answer(1, 1)">
-                        <div class="answer-score">1</div>
                         <span class="answer-title">Low dependency</span>
                         <div class="answer-desc">Mostly external-facing work, minimal need for internal operational knowledge</div>
                     </div>
@@ -493,17 +521,14 @@
                 <div class="screen-subtitle">How confidential or competitively sensitive is the information involved?</div>
                 <div class="answers-container">
                     <div class="answer-option" onclick="answer(2, 5)">
-                        <div class="answer-score">5</div>
                         <span class="answer-title">Highly confidential</span>
                         <div class="answer-desc">Trade secrets, competitive intelligence, M&A plans, or sensitive internal dynamics</div>
                     </div>
                     <div class="answer-option" onclick="answer(2, 3)">
-                        <div class="answer-score">3</div>
                         <span class="answer-title">Moderately sensitive</span>
                         <div class="answer-desc">Some confidential data, manageable with proper NDAs and controls</div>
                     </div>
                     <div class="answer-option" onclick="answer(2, 1)">
-                        <div class="answer-score">1</div>
                         <span class="answer-title">Low sensitivity</span>
                         <div class="answer-desc">Mostly public or industry-standard information, minimal confidentiality concerns</div>
                     </div>
@@ -518,17 +543,14 @@
                 <div class="screen-subtitle">How politically sensitive is the internal landscape around this initiative?</div>
                 <div class="answers-container">
                     <div class="answer-option" onclick="answer(3, 5)">
-                        <div class="answer-score">5</div>
                         <span class="answer-title">Highly political</span>
                         <div class="answer-desc">Significant resistance expected, cross-functional conflicts, turf wars likely</div>
                     </div>
                     <div class="answer-option" onclick="answer(3, 3)">
-                        <div class="answer-score">3</div>
                         <span class="answer-title">Moderately political</span>
                         <div class="answer-desc">Some stakeholder concerns and competing priorities, but manageable</div>
                     </div>
                     <div class="answer-option" onclick="answer(3, 1)">
-                        <div class="answer-score">1</div>
                         <span class="answer-title">Low politics</span>
                         <div class="answer-desc">Broad organizational alignment, minimal internal resistance expected</div>
                     </div>
@@ -543,17 +565,14 @@
                 <div class="screen-subtitle">How important is third-party validation to key stakeholders (boards, investors, regulators, major customers, industry/financial analysts)?</div>
                 <div class="answers-container">
                     <div class="answer-option" onclick="answer(4, 5)">
-                        <div class="answer-score">5</div>
                         <span class="answer-title">Critical for credibility</span>
                         <div class="answer-desc">Board presentation, investor scrutiny, regulatory review, or major customer confidence at stake</div>
                     </div>
                     <div class="answer-option" onclick="answer(4, 3)">
-                        <div class="answer-score">3</div>
                         <span class="answer-title">Helpful for validation</span>
                         <div class="answer-desc">External credibility would strengthen the case but not make-or-break</div>
                     </div>
                     <div class="answer-option" onclick="answer(4, 1)">
-                        <div class="answer-score">1</div>
                         <span class="answer-title">Internal credibility sufficient</span>
                         <div class="answer-desc">Stakeholders trust internal team capabilities and judgment</div>
                     </div>
@@ -568,17 +587,14 @@
                 <div class="screen-subtitle">How stretched is your internal team's current bandwidth?</div>
                 <div class="answers-container">
                     <div class="answer-option" onclick="answer(5, 5)">
-                        <div class="answer-score">5</div>
                         <span class="answer-title">Severely stretched</span>
                         <div class="answer-desc">Team at full capacity with existing priorities, no bandwidth for major new initiative</div>
                     </div>
                     <div class="answer-option" onclick="answer(5, 3)">
-                        <div class="answer-score">3</div>
                         <span class="answer-title">Moderately stretched</span>
                         <div class="answer-desc">Some capacity available, but would require reprioritizing other work</div>
                     </div>
                     <div class="answer-option" onclick="answer(5, 1)">
-                        <div class="answer-score">1</div>
                         <span class="answer-title">Adequate capacity</span>
                         <div class="answer-desc">Team has bandwidth to take on this initiative without major disruption</div>
                     </div>
@@ -593,17 +609,14 @@
                 <div class="screen-subtitle">How tight is your deadline for insights and recommendations?</div>
                 <div class="answers-container">
                     <div class="answer-option" onclick="answer(6, 5)">
-                        <div class="answer-score">5</div>
                         <span class="answer-title">Urgent (4-8 weeks)</span>
                         <div class="answer-desc">Board deadline, competitive pressure, crisis response, or regulatory requirement</div>
                     </div>
                     <div class="answer-option" onclick="answer(6, 3)">
-                        <div class="answer-score">3</div>
                         <span class="answer-title">Standard (2-4 months)</span>
                         <div class="answer-desc">Annual planning cycle, normal business rhythm, reasonable timeline</div>
                     </div>
                     <div class="answer-option" onclick="answer(6, 1)">
-                        <div class="answer-score">1</div>
                         <span class="answer-title">Flexible (6+ months)</span>
                         <div class="answer-desc">Long-term planning, capability building, can accommodate thorough internal process</div>
                     </div>
@@ -618,17 +631,14 @@
                 <div class="screen-subtitle">How much do you need cross-industry insights and external objectivity?</div>
                 <div class="answers-container">
                     <div class="answer-option" onclick="answer(7, 5)">
-                        <div class="answer-score">5</div>
                         <span class="answer-title">Critical need</span>
                         <div class="answer-desc">Internal team too close to the problem, need outside perspective to challenge assumptions</div>
                     </div>
                     <div class="answer-option" onclick="answer(7, 3)">
-                        <div class="answer-score">3</div>
                         <span class="answer-title">Would be valuable</span>
                         <div class="answer-desc">Fresh perspective helpful, but internal team can provide objective analysis</div>
                     </div>
                     <div class="answer-option" onclick="answer(7, 1)">
-                        <div class="answer-score">1</div>
                         <span class="answer-title">Internal perspective preferred</span>
                         <div class="answer-desc">Need people who understand our specific context and constraints</div>
                     </div>
@@ -643,17 +653,14 @@
                 <div class="screen-subtitle">Does this require specialized expertise your internal team lacks?</div>
                 <div class="answers-container">
                     <div class="answer-option" onclick="answer(8, 5)">
-                        <div class="answer-score">5</div>
                         <span class="answer-title">Significant skills gap</span>
                         <div class="answer-desc">Requires specialized expertise (e.g., M&A, digital transformation, regulatory) team doesn't have</div>
                     </div>
                     <div class="answer-option" onclick="answer(8, 3)">
-                        <div class="answer-score">3</div>
                         <span class="answer-title">Some skills gap</span>
                         <div class="answer-desc">Team could learn or develop capabilities, but external expertise would accelerate</div>
                     </div>
                     <div class="answer-option" onclick="answer(8, 1)">
-                        <div class="answer-score">1</div>
                         <span class="answer-title">Team has capabilities</span>
                         <div class="answer-desc">Internal team has the skills and experience needed for this type of work</div>
                     </div>
@@ -668,17 +675,14 @@
                 <div class="screen-subtitle">How critical is long-term internal ownership of implementation?</div>
                 <div class="answers-container">
                     <div class="answer-option" onclick="answer(9, 5)">
-                        <div class="answer-score">5</div>
                         <span class="answer-title">Critical for success</span>
                         <div class="answer-desc">Multi-year implementation, cultural change, requires ongoing internal championship</div>
                     </div>
                     <div class="answer-option" onclick="answer(9, 3)">
-                        <div class="answer-score">3</div>
                         <span class="answer-title">Important but manageable</span>
                         <div class="answer-desc">Internal ownership valuable, but can transition from external team</div>
                     </div>
                     <div class="answer-option" onclick="answer(9, 1)">
-                        <div class="answer-score">1</div>
                         <span class="answer-title">Low ownership needs</span>
                         <div class="answer-desc">Clear recommendations can be implemented by any capable team</div>
                     </div>
@@ -693,17 +697,14 @@
                 <div class="screen-subtitle">What's your budget flexibility for external expertise?</div>
                 <div class="answers-container">
                     <div class="answer-option" onclick="answer(10, 5)">
-                        <div class="answer-score">5</div>
                         <span class="answer-title">High budget flexibility</span>
                         <div class="answer-desc">Ample budget allocated, external spend approved and expected</div>
                     </div>
                     <div class="answer-option" onclick="answer(10, 3)">
-                        <div class="answer-score">3</div>
                         <span class="answer-title">Moderate budget available</span>
                         <div class="answer-desc">Some external budget possible, but needs to show clear ROI</div>
                     </div>
                     <div class="answer-option" onclick="answer(10, 1)">
-                        <div class="answer-score">1</div>
                         <span class="answer-title">Budget constrained</span>
                         <div class="answer-desc">Limited external spend available, need to maximize internal resources</div>
                     </div>
@@ -715,7 +716,7 @@
                 <div id="resultContent"></div>
                 
                 <div class="score-breakdown">
-                    <h4>Your Scoring Breakdown:</h4>
+                    <h4>How Each Answer Leaned:</h4>
                     <div class="score-grid" id="scoreBreakdown"></div>
                     <div class="total-score">
                         <strong>Result: <span id="totalScore"></span></strong>
@@ -796,7 +797,8 @@
         function answer(questionNum, score) {
             const questionType = questions[questionNum - 1];
             scores[questionType] = score;
-            answers[questionNum] = score;
+            answers[questionType] = event.target.closest('.answer-option')
+                .querySelector('.answer-title').textContent.trim();
             
             if (questionNum < 10) {
                 document.getElementById(`question${questionNum}`).classList.remove('active');
@@ -823,6 +825,19 @@
             }
         }
 
+        const internalSideQuestions = ['institutional', 'sensitivity', 'politics', 'ownership'];
+
+        // +1 = leans internal, 0 = neutral, -1 = leans external
+        function leanTowardInternal(q) {
+            const lean = (scores[q] - 3) / 2;   // 5 -> +1, 3 -> 0, 1 -> -1 toward the question's own side
+            return internalSideQuestions.includes(q) ? lean : -lean;
+        }
+
+        function leanLabel(q) {
+            const l = leanTowardInternal(q);
+            return l > 0 ? 'Leans internal' : l < 0 ? 'Leans external' : 'Neutral';
+        }
+
         function showResult() {
             document.getElementById('progressFill').style.width = '100%';
             document.getElementById('progressText').textContent = 'Analysis Complete!';
@@ -832,25 +847,18 @@
                 document.getElementById(`question${i}`).classList.remove('active');
             }
             
-            let internalScore = 0;
-            let externalScore = 0;
+            // Balanced scoring: each answer leans internal (+1), neutral (0) or external (-1).
+            // First answer leans toward the question's own side, middle is neutral,
+            // last answer leans toward the other side. Weighting doubles a question's pull.
             const currentWeights = weightings[weighting];
-            
-            const internalQuestions = ['institutional', 'sensitivity', 'politics', 'ownership'];
-            const externalQuestions = ['credibility', 'capacity', 'timeline', 'perspective', 'skills', 'budget'];
-            
-            internalQuestions.forEach(q => {
-                const weight = currentWeights[q];
-                internalScore += scores[q] * weight;
+            let balance = 0;
+            let maxBalance = 0;
+            questions.forEach(q => {
+                const w = currentWeights[q];
+                balance += leanTowardInternal(q) * w;
+                maxBalance += w;
             });
-            
-            externalQuestions.forEach(q => {
-                const weight = currentWeights[q];
-                externalScore += scores[q] * weight;
-            });
-            
-            const totalWeightedScore = internalScore + externalScore;
-            const internalPercentage = (internalScore / totalWeightedScore) * 100;
+            const internalPercentage = 50 + 50 * (balance / maxBalance);
             
             let recommendation, reasons, resultClass;
             
@@ -911,14 +919,16 @@
                 </div>
             `;
             
-            document.getElementById('scoreBreakdown').innerHTML = Object.entries(scores)
-                .map(([key, value]) => {
-                    const weight = currentWeights[key];
-                    const weightedScore = value * weight;
-                    const maxWeighted = 5 * weight;
+            document.getElementById('scoreBreakdown').innerHTML = questions
+                .map(q => {
+                    const l = leanTowardInternal(q);
+                    const cls = l > 0 ? 'lean-internal' : l < 0 ? 'lean-external' : 'lean-neutral';
+                    const doubled = currentWeights[q] > 1 ? '<span class="lean-double">Counts double</span>' : '';
                     return `
                         <div class="score-item">
-                            <strong>${questionLabels[key]}:</strong> ${value}/5 ${weight > 1 ? `(×${weight} = ${weightedScore}/${maxWeighted})` : ''}
+                            <strong>${questionLabels[q]}</strong>
+                            <div class="score-answer">${answers[q]}</div>
+                            <span class="lean-tag ${cls}">${leanLabel(q)}</span>${doubled}
                         </div>
                     `;
                 }).join('');
@@ -952,14 +962,14 @@
                 .filter(q => scores[q] !== undefined)
                 .map(q => {
                     const w = currentWeights[q];
-                    return `- ${questionLabels[q]}: ${scores[q]}/5` + (w > 1 ? ` (weighted x${w})` : '');
+                    return `- ${questionLabels[q]}: ${answers[q]} (${leanLabel(q).toLowerCase()}${w > 1 ? ', counts double' : ''})`;
                 }).join('\n');
             const total = document.getElementById('totalScore').textContent.trim();
 
             return `Strategy Decision Tool Results\n\n` +
                 `Recommendation: ${title}\n${subtitle}\n\n` +
                 `Key Drivers:\n${drivers}\n\n` +
-                `Scoring Breakdown:\n${scoreLines}\n\n` +
+                `How Each Answer Leaned:\n${scoreLines}\n\n` +
                 `Result: ${total}\n\n` +
                 `Generated by the Fathom Insight Management Strategy Decision Tool\n` +
                 `https://jennshelton.github.io/fathom-decision-tree/`;
