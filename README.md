@@ -14,7 +14,7 @@ An interactive tool that helps organizations decide whether to use their interna
 - Answers stay in the visitor's browser and are never stored or sent anywhere.
 
 ## Live site
-https://jennshelton.github.io/fathom-decision-tree/
+https://decide.fathominsight.com/
 
 ## License
 MIT
